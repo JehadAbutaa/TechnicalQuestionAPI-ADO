@@ -55,33 +55,20 @@ namespace TechnicalQuestionAPI_ADO.Controllers
             // fetch connection information with database 
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             //setup sql command 
-            string commandString = "INSERT INTO [dbo].[User]([Title],[Description],[Rate],[ISACTIVE])VALUES(@tit,@des,@rate,@isAct)";
+            string commandString = "INSERT INTO [dbo].[User]([FullName],[Age],[Specification],[Gender],[NationalityId],[UserType],[Bio],[PersonalPhoto],[Adress]),[EMAIL],[PASSWORD],[PHONENUMBER]VALUES(@FullName,@Age,@Specification,@Gender,@NationalityId,@UserType,@Bio,@PersonalPhoto,@Adress,@EMAIL,@PASSWORD,@PHONENUMBER)";
             SqlCommand command = new SqlCommand(commandString, connection);
-            command.Parameters.AddWithValue("@tit", dto.Title);
-            command.Parameters.AddWithValue("@des", dto.Description);
-            command.Parameters.AddWithValue("@rate", dto.Rate);
-            command.Parameters.AddWithValue("@isAct", dto.IsActive);
-            connection.Open();
-            int rows = command.ExecuteNonQuery();
-            connection.Close();
-            if (rows > 0)
-                return Ok();
-            else
-                return BadRequest("Insert Operation has beem Failed");
-        }
-        [HttpPost]
-        [Route("CreateSkills")]
-        public IActionResult InsertSkill([FromBody] CreateSkillDTO dto)
-        {
-            //Call Procdure in ADO.NET
-            // fetch connection information with database 
-            SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-            string procName = "InsertSkillRecord";
-            SqlCommand command = new SqlCommand(procName, connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@title", dto.Title);
-            command.Parameters.AddWithValue("@description", dto.Description);
-            command.Parameters.AddWithValue("@rate", dto.Rate);
+            command.Parameters.AddWithValue("@FullName", dto.FullName);
+            command.Parameters.AddWithValue("@Age", dto.Age);
+            command.Parameters.AddWithValue("@Specification", dto.Specification);
+            command.Parameters.AddWithValue("@Gender", dto.Gender);
+            command.Parameters.AddWithValue("@NationalityId", dto.NationalityId);
+            command.Parameters.AddWithValue("@UserType", dto.UserType);
+            command.Parameters.AddWithValue("@Bio", dto.Bio);
+            command.Parameters.AddWithValue("@PersonalPhoto", dto.PersonalPhoto);
+            command.Parameters.AddWithValue("@Adress", dto.Adress);
+            command.Parameters.AddWithValue("@EMAIL", dto.EMAIL);
+            command.Parameters.AddWithValue("@PASSWORD", dto.PASSWORD);
+            command.Parameters.AddWithValue("@PHONENUMBER", dto.PHONENUMBER);
             connection.Open();
             int rows = command.ExecuteNonQuery();
             connection.Close();
@@ -91,14 +78,15 @@ namespace TechnicalQuestionAPI_ADO.Controllers
                 return BadRequest("Insert Operation has beem Failed");
         }
 
+
         [HttpPut]
         [Route("[action]/{Id}")]
-        public IActionResult UpdateSkills([FromRoute] int Id, [FromBody] CreateSkillDTO dto)
+        public IActionResult UpdateUser([FromRoute] int Id, [FromBody] UserTController dto)
         {
             // fetch connection information with database 
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             //setup sql command 
-            string commandString = $"UPDATE SKILLS SET Title ='{dto.Title}' ,Description = '{dto.Description}',Rate = '{dto.Rate}' WHERE SKILLSID = {Id}";
+            string commandString = $"UPDATE [user] SET FullName ='{dto.FullName}' ,PASSWORD = '{dto.PASSWORD}',PHONENUMBER = '{dto.PHONENUMBER}' WHERE USERID = {Id}";
             SqlCommand command = new SqlCommand(commandString, connection);
             connection.Open();
             int rows = command.ExecuteNonQuery();
@@ -110,12 +98,12 @@ namespace TechnicalQuestionAPI_ADO.Controllers
         }
         [HttpDelete]
         [Route("[action]/{Id}")]
-        public IActionResult DeleteSkills([FromRoute] int Id)
+        public IActionResult DeleteUser([FromRoute] int Id)
         {
             // fetch connection information with database 
             SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             //setup sql command 
-            string commandString = $"DELETE FROM SKILLS WHERE SKILLSID = {Id}";
+            string commandString = $"DELETE FROM [USER] WHERE USERID = {Id}";
             SqlCommand command = new SqlCommand(commandString, connection);
             connection.Open();
             int rows = command.ExecuteNonQuery();
@@ -125,6 +113,10 @@ namespace TechnicalQuestionAPI_ADO.Controllers
             else
                 return BadRequest("Insert Operation has beem Failed");
         }
+
+
+
+
 
 
     }
